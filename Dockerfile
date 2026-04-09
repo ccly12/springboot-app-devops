@@ -1,18 +1,12 @@
-FROM eclipse-temurin:21-jdk AS build
-
-RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf && \
-    echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+FROM gradle:8.14-jdk21 AS build
 
 WORKDIR /app
 
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-COPY src src
+COPY build.gradle settings.gradle ./
+RUN gradle dependencies --no-daemon
 
-RUN chmod +x gradlew
-RUN ./gradlew clean bootJar --no-daemon
+COPY src src/
+RUN gradle bootJar --no-daemon
 
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
