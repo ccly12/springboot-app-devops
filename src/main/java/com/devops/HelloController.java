@@ -13,6 +13,6 @@ public class HelloController {
 
     @GetMapping("/saludo")
     public String saludo() {
-        return "Hola desde Spring Boot XDd 👋";
+        return "Hola desde Spring Boot Xd 👋";
     }
 }
