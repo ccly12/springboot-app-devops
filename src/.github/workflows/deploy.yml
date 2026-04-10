@@ -19,7 +19,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Compilar con Gradle
-        run: ./gradlew bootJar
+        run: |
+          chmod +x gradlew
+          ./gradlew bootJar
 
       - name: Construir Imagen
         run: docker build -t app-devops:latest .
@@ -28,3 +30,9 @@ jobs:
         run: |
           docker tag app-devops:latest localhost:5000/app-devops:latest
           docker push localhost:5000/app-devops:latest
+
+      - name: Desplegar Contenedor
+        run: |
+          docker stop app-container || true
+          docker rm app-container || true
+          docker run -d --name app-container -p 8081:8080 localhost:5000/app-devops:latest
