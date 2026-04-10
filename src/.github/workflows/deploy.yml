@@ -31,7 +31,7 @@ jobs:
           docker tag app-devops:latest localhost:5000/app-devops:latest
           docker push localhost:5000/app-devops:latest
 
-      - name: Desplegar Contenedor
+      - name: Desplegar Contenedor 1
         run: |
           docker stop app-container || true
           docker rm app-container || true
