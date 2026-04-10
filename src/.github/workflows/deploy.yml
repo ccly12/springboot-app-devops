@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout del codigo
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Compilar con Gradle
+        run: ./gradlew bootJar
+
+      - name: Construir Imagen
+        run: docker build -t app-devops:latest .
+
+      - name: Push al Registry
+        run: |
+          docker tag app-devops:latest localhost:5000/app-devops:latest
+          docker push localhost:5000/app-devops:latest
