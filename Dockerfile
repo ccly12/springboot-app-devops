@@ -1,5 +1,7 @@
 FROM eclipse-temurin:21-jdk AS build
+RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf
 WORKDIR /app
+
 
 COPY gradlew .
 COPY gradle gradle
