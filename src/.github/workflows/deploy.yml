@@ -1,40 +1,38 @@
-name: CI/CD Pipeline
+name: Deploy to Production
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout del codigo
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      - name: Compilar con Gradle
+      - name: Cargar IP del Registry
         run: |
-          chmod +x gradlew
-          ./gradlew bootJar
+          source /opt/registry_ip.txt
+          echo "REGISTRY_IP=${REGISTRY_IP}" >> $GITHUB_ENV
 
-      - name: Construir Imagen
-        run: docker build -t app-devops:latest .
-
-      - name: Push al Registry
+      - name: Pull de la imagen desde Registry
         run: |
-          docker tag app-devops:latest localhost:5000/app-devops:latest
-          docker push localhost:5000/app-devops:latest
+          docker pull ${REGISTRY_IP}:5000/springboot-app:latest
 
-      - name: Desplegar Contenedor
+      - name: Detener contenedor actual
         run: |
           docker stop app-container || true
           docker rm app-container || true
-          docker run -d --name app-container -p 8081:8080 localhost:5000/app-devops:latest
 
-          
+      - name: Desplegar nuevo contenedor
+        run: |
+          docker run -d \
+            --name app-container \
+            -p 8080:8080 \
+            --restart unless-stopped \
+            ${REGISTRY_IP}:5000/springboot-app:latest
+
+      - name: Verificar despliegue
+        run: |
+          sleep 5
+          docker ps | grep app-container
+          echo "✅ App desplegada en puerto 8080"
