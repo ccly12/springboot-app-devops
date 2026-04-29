@@ -8,11 +8,11 @@ public class HelloController {
 
     @GetMapping("/")
     public String home() {
-        return "FUNCIONANDO DE NUEVO 🚀";
+        return "HOLA 🚀";
     }
 
     @GetMapping("/saludo")
     public String saludo() {
-        return "Hola desde Spring Boot Xd 👋";
+        return "Hola desde Spring Boot 👋";
     }
 }
