@@ -9,9 +9,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout del código
-        uses: actions/checkout@v4
-
       - name: Cargar IP del Registry
         run: |
           source /opt/registry_ip.txt
@@ -19,6 +16,7 @@ jobs:
 
       - name: Desplegar con Docker Compose
         run: |
+          cd /opt/app
           REGISTRY_IP=${REGISTRY_IP} docker-compose down || true
           REGISTRY_IP=${REGISTRY_IP} docker-compose pull
           REGISTRY_IP=${REGISTRY_IP} docker-compose up -d
@@ -27,5 +25,5 @@ jobs:
         run: |
           sleep 5
           docker ps
-          echo "✅ App: http://localhost:8080"
-          echo "✅ Adminer: http://localhost:8081"
+          echo " App: http://localhost:8080"
+          echo " Adminer: http://localhost:8081"
