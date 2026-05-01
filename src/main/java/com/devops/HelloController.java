@@ -8,7 +8,7 @@ public class HelloController {
 
     @GetMapping("/")
     public String home() {
-        return "HOLA MUNDO /saludo🚀";
+        return "HOLA /saludo🚀";
     }
 
     @GetMapping("/saludo")
