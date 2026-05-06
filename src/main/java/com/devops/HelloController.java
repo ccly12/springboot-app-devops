@@ -6,13 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @GetMapping("/")
-    public String home() {
-        return "HOLA 🚀";
-    }
-
     @GetMapping("/saludo")
     public String saludo() {
-        return "Hola desde Spring Boot 👋";
+        return "¡Hola!  API de Spring Boot está funcionando perfectamente. 👩‍💻";
     }
 }
