@@ -8,6 +8,6 @@ public class HelloController {
 
     @GetMapping("/saludo")
     public String saludo() {
-        return "¡Hola!  API de Spring Boot está funcionando perfectamente. 👩‍💻";
+        return "¡Hola!  API de Spring Boot está funcionando perfectamente. ¡Bienvenido a mi proyecto DevOps!";
     }
 }
